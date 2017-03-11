@@ -1,12 +1,30 @@
 package com.clem.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 /**
  * Created by laileon on 2017/3/1.
  */
+@Entity
 public class User {
+    @Id
+    @GeneratedValue
     private Long id;
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private Integer age;
+
+    public User() {
+    }
+
+    public User(String name, Integer age) {
+        this.name = name;
+        this.age = age;
+    }
 
     public Long getId() {
         return id;

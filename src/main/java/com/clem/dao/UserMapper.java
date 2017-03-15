@@ -1,4 +1,4 @@
-package com.clem.domain;
+package com.clem.dao;
 
 import com.clem.domain.User;
 import org.apache.ibatis.annotations.Mapper;

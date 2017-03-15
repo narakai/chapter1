@@ -1,30 +1,32 @@
 package com.clem;
 
 import com.clem.domain.User;
-import com.clem.domain.UserMapper;
+import com.clem.dao.UserMapper;
+import com.clem.service.UserService;
+import com.clem.service.impl.UserServiceImpl;
 import com.clem.web.HelloController;
 import com.clem.web.UserController;
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Rollback;
+import org.springframework.stereotype.Service;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.io.Reader;
-
 import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -43,6 +45,8 @@ public class Chapter1ApplicationTests {
     @Before
     public void setUp() throws Exception {
         mvc = MockMvcBuilders.standaloneSetup(new HelloController(), new UserController()).build();
+        MockitoAnnotations.initMocks(this);
+        when(userMapper1.insert(any(User.class))).thenReturn(1);
     }
 
     @Test
@@ -153,7 +157,6 @@ public class Chapter1ApplicationTests {
 //        }
 //    }
 
-
     @Autowired
     private UserMapper userMapper;
 
@@ -174,5 +177,22 @@ public class Chapter1ApplicationTests {
         userMapper.insert(user);
         Assert.assertEquals(32, userMapper.selectByName("Leon").getAge().longValue());
     }
+
+    @InjectMocks
+    private UserService userService = new UserServiceImpl();
+    @Mock
+    private UserMapper userMapper1;
+
+//    @Test
+//    public void testServiceImpl() throws Exception {
+//        User user = new User();
+//        user.setId((long) 1);
+//        user.setName("Leon");
+//        user.setAge(18);
+//        userMapper1.insert(user);
+//        User user2 = userService.finaUserByName("Leon");
+//        Assert.assertEquals(18, user2.getAge().longValue());
+//
+//    }
 
 }

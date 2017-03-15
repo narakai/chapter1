@@ -13,7 +13,7 @@ public class User {
     @Id
     @GeneratedValue
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 5)
     private String name;
     @Column(nullable = false)
     private Integer age;

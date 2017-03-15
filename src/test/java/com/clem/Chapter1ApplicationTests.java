@@ -16,6 +16,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -96,6 +99,7 @@ public class Chapter1ApplicationTests {
 	}
 
 	@Test
+    @Transactional(isolation = Isolation.DEFAULT, propagation = Propagation.REQUIRED)
 	public void test() throws Exception {
 		// 创建10条记录
 		userRepository.save(new User("AAA", 10));
@@ -105,7 +109,7 @@ public class Chapter1ApplicationTests {
 		userRepository.save(new User("EEE", 50));
 		userRepository.save(new User("FFF", 60));
 		userRepository.save(new User("GGG", 70));
-		userRepository.save(new User("HHH", 80));
+		userRepository.save(new User("HHHHH", 80));
 		userRepository.save(new User("III", 90));
 		userRepository.save(new User("JJJ", 100));
 		// 测试findAll, 查询所有记录

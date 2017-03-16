@@ -5,6 +5,8 @@ import com.clem.service.UserRepository;
 import com.clem.tasks.Tasks;
 import com.clem.web.HelloController;
 import com.clem.web.UserController;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -153,4 +155,14 @@ public class Chapter1ApplicationTests {
         long end = System.currentTimeMillis();
         System.out.println("任务全部完成，总耗时：" + (end - start) + "毫秒");
 	}
+
+	Logger logger = LogManager.getLogger("Test");
+
+	@Test
+    public void contextLoads() {
+        logger.trace("I am trace log.");
+        logger.debug("I am debug log.");
+        logger.warn("I am warn log.");
+        logger.error("I am error log.");
+    }
 }

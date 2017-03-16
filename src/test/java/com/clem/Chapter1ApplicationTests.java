@@ -1,7 +1,8 @@
 package com.clem;
 
 import com.clem.domain.User;
-import com.clem.domain.UserRepository;
+import com.clem.service.UserRepository;
+import com.clem.tasks.Tasks;
 import com.clem.web.HelloController;
 import com.clem.web.UserController;
 import org.junit.Assert;
@@ -19,6 +20,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.concurrent.Future;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -124,5 +127,30 @@ public class Chapter1ApplicationTests {
 		userRepository.delete(userRepository.findByName("AAA"));
 		// 测试findAll, 查询所有记录, 验证上面的删除是否成功
 		Assert.assertEquals(9, userRepository.findAll().size());
+	}
+
+	@Autowired
+	private Tasks task;
+	@Test
+	public void testTasks() throws Exception {
+//		task.doTaskOne();
+//		task.doTaskTwo();
+//		task.doTaskThree();
+        long start = System.currentTimeMillis();
+
+        Future<String> task1 = task.doTaskOne();
+        Future<String> task2 = task.doTaskTwo();
+        Future<String> task3 = task.doTaskThree();
+
+        while(true) {
+            if(task1.isDone() && task2.isDone() && task3.isDone()) {
+                // 三个任务都调用完成，退出循环等待
+                break;
+            }
+            Thread.sleep(500);
+        }
+
+        long end = System.currentTimeMillis();
+        System.out.println("任务全部完成，总耗时：" + (end - start) + "毫秒");
 	}
 }
